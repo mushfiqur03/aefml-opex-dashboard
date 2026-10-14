@@ -858,14 +858,10 @@ function renderNotes(){
 
 /* ------------------------------------------------------------- controls */
 function buildControls(){
-  $id("presetBtns").innerHTML=PRESETS.map(function(p){
-    return '<button class="chip'+(S.preset===p[0]?" on":"")+'" data-p="'+p[0]+'">'+p[1]+'</button>';
-  }).join("");
   var scopes=["Group"].concat(SBU);
   $id("scopeBtns").innerHTML=scopes.map(function(s){
     return '<button class="chip'+(s===S.scope?" on":"")+'" data-s="'+s+'">'+(s==="Group"?"Group (all)":s)+'</button>';
   }).join("");
-  $id("presetBtns").onclick=function(e){ if(e.target.dataset.p){ setPreset(e.target.dataset.p); } };
   $id("scopeBtns").onclick=function(e){ if(e.target.dataset.s){ S.scope=e.target.dataset.s; buildControls(); render(); } };
 }
 function setPreset(k){
