@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AEL / AEFML — Operational Excellence Command Centre v2</title>
+<style>
+:root{
+  --bg:#04060a; --bg2:#070b12; --card:#0c121b; --card2:#101927; --line:#1b2735; --line2:#243447;
+  --txt:#e9f0f8; --mut:#8ea1b5; --dim:#5d7086;
+  --teal:#2dd4bf; --cyan:#22d3ee; --blue:#3b82f6; --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --pink:#f472b6; --violet:#a78bfa; --orange:#fb923c;
+  --glow:0 0 0 1px rgba(45,212,191,.08), 0 8px 30px -12px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:
+  radial-gradient(1200px 600px at 15% -10%, rgba(34,211,238,.07), transparent 60%),
+  radial-gradient(900px 500px at 95% 0%, rgba(167,139,250,.06), transparent 60%),
+  var(--bg);
+  color:var(--txt);font-family:"Segoe UI",Inter,Arial,Helvetica,sans-serif;font-size:13px;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan);text-decoration:none}
+code{color:#2dd4bf;font-size:10.5px;word-break:break-all}
+.wrap{max-width:1500px;margin:0 auto;padding:0 18px 60px}
+/* ---------- header ---------- */
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(4,6,10,.97),rgba(4,6,10,.86));backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topin{max-width:1500px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,#0f766e,#22d3ee 60%,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#04121a;letter-spacing:.5px;box-shadow:0 6px 22px -8px rgba(34,211,238,.7)}
+.brand h1{margin:0;font-size:16.5px;font-weight:800;letter-spacing:.3px}
+.brand .sub{font-size:10.5px;color:var(--mut);letter-spacing:2.2px;text-transform:uppercase}
+.brand .v{font-size:9px;color:var(--teal);letter-spacing:1.5px;border:1px solid rgba(45,212,191,.4);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.spacer{flex:1}
+.pill{display:flex;gap:10px;flex-wrap:wrap}
+.pill .p{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:11px;color:var(--mut);line-height:1.35}
+.pill .p b{display:block;color:var(--txt);font-size:12.5px}
+.dotlive{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* ---------- controls ---------- */
+.controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding:14px 0 6px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.ctl{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.ctl .lbl{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--dim);margin-right:2px}
+button.chip{background:var(--card);border:1px solid var(--line);color:var(--mut);font-weight:700;font-size:11.5px;padding:7px 13px;border-radius:8px;cursor:pointer;letter-spacing:.2px;transition:.15s}
+button.chip:hover{border-color:var(--line2);color:var(--txt)}
+button.chip.on{background:linear-gradient(135deg,rgba(45,212,191,.18),rgba(34,211,238,.12));border-color:rgba(45,212,191,.55);color:#a7f3e6;box-shadow:0 0 0 1px rgba(45,212,191,.18),0 6px 18px -10px rgba(45,212,191,.8)}
+button.btn{background:var(--card);border:1px solid var(--line2);color:var(--txt);font-weight:700;font-size:11.5px;padding:7px 13px;border-radius:8px;cursor:pointer;transition:.15s}
+button.btn:hover{border-color:var(--teal);color:#a7f3e6}
+input.dt{background:#0a111a;border:1px solid var(--line2);color:var(--txt);border-radius:8px;padding:6px 9px;font-size:12px;font-family:inherit;color-scheme:dark}
+input.rate{background:#0a111a;border:1px solid var(--line2);color:#a7f3e6;border-radius:7px;padding:5px 8px;font-size:12px;width:105px;text-align:right;font-family:inherit}
+.rangelbl{font-size:11.5px;color:var(--mut)}
+.rangelbl b{color:var(--teal)}
+/* ---------- sections ---------- */
+h2.sec{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--cyan);margin:26px 0 10px;display:flex;align-items:center;gap:10px}
+h2.sec:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+h2.sec .n{font-size:10px;color:var(--dim);font-weight:600;letter-spacing:1px;text-transform:none}
+.grid{display:grid;gap:13px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g23{grid-template-columns:2fr 1fr}
+.g32{grid-template-columns:1.6fr 1fr}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:13px;padding:14px 15px;box-shadow:var(--glow)}
+.card h3{margin:0 0 11px;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);font-weight:800;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.card h3 .tag{font-size:9.5px;color:var(--dim);letter-spacing:.5px;text-transform:none;font-weight:600}
+/* ---------- KPI ---------- */
+.kpi{position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent,var(--cyan));opacity:.85}
+.kpi .lab{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);font-weight:700}
+.kpi .val{font-size:34px;font-weight:800;line-height:1.05;margin:5px 0 1px;letter-spacing:-1px}
+.kpi .val small{font-size:14px;font-weight:700;color:var(--mut);letter-spacing:0}
+.kpi .tgt{font-size:10.5px;color:var(--dim)}
+.kpi .d{font-size:11px;font-weight:800;margin-top:5px;display:inline-block;padding:2px 8px;border-radius:20px}
+.d.bad{background:rgba(239,68,68,.14);color:#fca5a5}
+.d.warn{background:rgba(245,158,11,.16);color:#fcd34d}
+.d.ok{background:rgba(34,197,94,.14);color:#86efac}
+.kpi .bar{height:7px;border-radius:5px;background:#0a1420;margin-top:9px;position:relative;overflow:hidden}
+.kpi .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.kpi .bar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:#e9f0f8;opacity:.5}
+.kpi .foot{font-size:10.3px;color:var(--dim);margin-top:8px;border-top:1px solid var(--line);padding-top:7px;display:flex;justify-content:space-between;gap:8px}
+/* ---------- misc ---------- */
+.muted{color:var(--mut)}.dim{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:9.6px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);font-weight:800;position:sticky;top:0;background:#0b1119;z-index:1}
+tbody tr:hover{background:rgba(45,212,191,.04)}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.tagc{display:inline-block;font-size:9.5px;padding:2px 8px;border-radius:20px;font-weight:800;letter-spacing:.3px;white-space:nowrap}
+.bar-list .bl{display:grid;grid-template-columns:var(--w,150px) 1fr 82px;gap:9px;align-items:center;margin:6px 0;font-size:11.5px}
+.bar-list .bl .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt)}
+.track{background:#0a1420;border-radius:5px;height:15px;position:relative;display:block;overflow:hidden}
+.track > i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.track > u{position:absolute;top:0;bottom:0;width:2px;background:#dbe6f1;opacity:.45}
+.bl .v{text-align:right;font-variant-numeric:tabular-nums;font-weight:800}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:9px}
+.legend span b{color:var(--txt)}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:middle}
+.insight{display:flex;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.16);font-size:11.8px;color:#cfe9f2;line-height:1.5}
+.insight .ic{font-size:15px;line-height:1}
+.insight.warn{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.22)}
+.insight.bad{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.22)}
+.insight.good{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.22)}
+.rec{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-left:3px solid var(--rc,#22d3ee);border-radius:11px;padding:12px 14px}
+.rec .h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.rec .t{font-weight:800;font-size:12.8px;line-height:1.3}
+.rec .m{font-size:10px;color:var(--dim);letter-spacing:.6px;text-transform:uppercase;font-weight:800;margin-bottom:3px}
+.rec .x{font-size:11.5px;color:var(--mut);margin-top:7px;line-height:1.5}
+.rec .x b{color:#bcd7e5}
+.rec .own{font-size:10px;color:var(--dim);margin-top:8px;border-top:1px solid var(--line);padding-top:7px}
+.gauge{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.stat{background:#0a111a;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat .l{font-size:9.6px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim);font-weight:800}
+.stat .v{font-size:21px;font-weight:800;margin-top:3px;letter-spacing:-.5px}
+.stat .v small{font-size:11px;color:var(--dim);font-weight:700}
+.stat .s{font-size:10px;color:var(--dim);margin-top:2px}
+/* loss tree */
+.tree .row{display:grid;grid-template-columns:170px 1fr 120px;gap:10px;align-items:center;margin:5px 0}
+.tree .row .nm{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree .row .nm small{display:block;font-weight:600;color:var(--dim);font-size:9.6px}
+.tree .row .v{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800}
+.tree .row .v small{display:block;font-weight:600;color:var(--dim);font-size:9.6px}
+.tree .row.total .nm,.tree .row.total .v{font-size:13px}
+/* alerts */
+.alert{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:9px;border:1px solid var(--line);background:#0a111a;margin:6px 0}
+.alert .sev{font-size:9.5px;font-weight:800;letter-spacing:.8px;padding:2px 7px;border-radius:20px;white-space:nowrap;margin-top:1px}
+.alert .tx{font-size:11.5px;line-height:1.45;color:var(--mut)}
+.alert .tx b{color:var(--txt)}
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:14px;font-size:10.5px;color:var(--dim);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media (max-width:1150px){.g4{grid-template-columns:1fr 1fr}.g5{grid-template-columns:1fr 1fr 1fr}.g3{grid-template-columns:1fr 1fr}.g23,.g32{grid-template-columns:1fr}}
+@media (max-width:700px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}.kpi .val{font-size:29px}.bar-list .bl{grid-template-columns:110px 1fr 66px}.tree .row{grid-template-columns:120px 1fr 96px}}
+@media print{body{background:#fff;color:#111}.card{border:1px solid #ccc;box-shadow:none}header.top{position:static}.controls{display:none}th{background:#eee;color:#333}h2.sec{color:#0f766e}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="topin">
+    <div class="brand">
+      <div class="mark">AEL</div>
+      <div>
+        <div class="sub">Akij Resource Limited &middot; Operational Excellence</div>
+        <h1>Manufacturing Performance &amp; Loss Diagnostic<span class="v">V2 &middot; date-range</span></h1>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="pill">
+      <div class="p"><b id="hpAsof">—</b>data as-of</div>
+      <div class="p"><b id="hpScope">Group</b>scope</div>
+      <div class="p"><b id="hpRange">—</b>range (days)</div>
+      <div class="p"><span class="dotlive"></span><b id="hpGen">—</b>generated</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="controls">
+    <div class="ctl"><span class="lbl">Range</span><span id="presetBtns"></span></div>
+    <div class="ctl"><span class="lbl">From</span><input type="date" id="dFrom" class="dt"/></div>
+    <div class="ctl"><span class="lbl">To</span><input type="date" id="dTo" class="dt"/></div>
+    <div class="ctl"><button class="btn" id="btnApply">Apply</button></div>
+    <div class="ctl"><span class="lbl">Scope</span><span id="scopeBtns"></span></div>
+    <div class="spacer"></div>
+    <div class="ctl"><button class="btn" id="btnCsv">Export CSV</button><button class="btn" id="btnPrint">Print</button></div>
+  </div>
+  <div class="rangelbl" id="rangeLbl" style="margin-top:10px"></div>
+
+  <h2 class="sec">Executive snapshot <span class="n" id="snapNote"></span></h2>
+  <div class="grid g5" id="kpis"></div>
+  <div class="grid g5" style="margin-top:13px" id="kpis2"></div>
+  <div class="grid g23" style="margin-top:13px">
+    <div class="card">
+      <h3>OEE loss waterfall <span class="tag">percentage points lost vs 100%</span></h3>
+      <div id="waterfall"></div>
+    </div>
+    <div class="card">
+      <h3>Time decomposition <span class="tag">failure to produce vs planned time</span></h3>
+      <div id="timedonut"></div>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:13px" id="insightRow"></div>
+
+  <h2 class="sec">Loss tree &amp; data integrity <span class="n">where the planned time actually goes</span></h2>
+  <div class="grid g32">
+    <div class="card"><h3>Time loss tree <span class="tag">minutes · planned production time → good output</span></h3><div id="losstree"></div></div>
+    <div class="card"><h3>Data integrity &amp; standard check <span class="tag">audit flags</span></h3><div id="dqPanel"></div></div>
+  </div>
+
+  <h2 class="sec">Why OEE is where it is <span class="n">loss classification</span></h2>
+  <div class="grid g32">
+    <div class="card">
+      <h3>Downtime by loss class <span class="tag">minutes</span></h3>
+      <div id="classes"></div>
+    </div>
+    <div class="card">
+      <h3>Downtime by category <span class="tag">Pareto · minutes</span></h3>
+      <div id="catpareto"></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Critical loss drivers <span class="n">top downtime reasons · 80/20</span></h2>
+  <div class="grid g23">
+    <div class="card">
+      <h3>Top downtime reasons <span class="tag">unplanned · with 80/20 flag</span></h3>
+      <div style="max-height:430px;overflow:auto" id="reasons"></div>
+    </div>
+    <div class="card">
+      <h3>Reliability &amp; maintenance <span class="tag">MTTR / MTBF</span></h3>
+      <div id="reliability"></div>
+      <div style="margin-top:12px" id="bdtypes"></div>
+    </div>
+  </div>
+
+  <h2 class="sec">Where the loss sits <span class="n">shift · line · asset · product</span></h2>
+  <div class="grid g2">
+    <div class="card"><h3>OEE by shift <span class="tag">best vs worst</span></h3><div id="shifts"></div></div>
+    <div class="card"><h3>OEE by line / mill <span class="tag">asset dispersion</span></h3><div id="lines"></div></div>
+  </div>
+  <div class="grid g2" style="margin-top:13px">
+    <div class="card"><h3>OEE by product <span class="tag">product criteria</span></h3><div id="products"></div></div>
+    <div class="card"><h3>OEE by machine / packer <span class="tag">asset level</span></h3><div id="machines"></div></div>
+  </div>
+
+  <h2 class="sec">Loss monetisation &amp; exceptions <span class="n">BDT impact · RAG alerts</span></h2>
+  <div class="grid g32">
+    <div class="card"><h3>Cost of loss <span class="tag">enter your BDT / unit to monetise</span></h3><div id="costpanel"></div></div>
+    <div class="card"><h3>Exception alerts <span class="tag">auto-flagged</span></h3><div id="alerts"></div></div>
+  </div>
+
+  <h2 class="sec">Trend &amp; momentum <span class="n">over the selected range</span></h2>
+  <div class="card"><h3 id="monthlyTtl">Monthly OEE &amp; output <span class="tag">bars = output · line = OEE%</span></h3><div id="monthly"></div></div>
+  <div class="card" style="margin-top:13px"><h3>Daily OEE &amp; unplanned downtime <span class="tag">selected range</span></h3><div id="daily"></div></div>
+
+  <h2 class="sec">Yield &amp; material flow <span class="n">input → output → by-products</span></h2>
+  <div class="card"><div id="mix"></div></div>
+
+  <h2 class="sec">Cross-SBU performance <span class="n">basket comparison · RAG</span></h2>
+  <div class="card"><div id="compare"></div></div>
+
+  <h2 class="sec">Order-to-delivery &amp; energy <span class="n">service and cost</span></h2>
+  <div class="grid g2">
+    <div class="card"><h3>Plan vs actual delivery <span class="tag">current sheet state</span></h3><div id="delivery"></div></div>
+    <div class="card"><h3>Electrical energy <span class="tag">kWh, intensity &amp; cost</span></h3><div id="energy"></div></div>
+  </div>
+
+  <h2 class="sec">AI recommendations <span class="n">prioritised · owner-mapped · range-aware</span></h2>
+  <div class="grid g2" id="recs"></div>
+
+  <h2 class="sec">Data quality &amp; method notes</h2>
+  <div class="card"><div id="notes"></div></div>
+
+  <footer>
+    <span>Source: <b id="ftSrc">—</b> &middot; Engine: AEL OPEX diagnostic V2 &middot; OEE = Effective Availability × Performance × Quality</span>
+    <span>A<sub>eff</sub> = effective run ÷ (operation − planned DT) &middot; Performance = Σ(ideal&nbsp;CT × throughput) ÷ effective run (capped 100%) &middot; Quality = good ÷ output</span>
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
